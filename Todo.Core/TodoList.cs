@@ -21,9 +21,8 @@ namespace Todo.Core
 
         public int Count => _items.Count;
 
-        public void Save(string path)
+        public void Save(string path, string title)
         {
-            string title = "Item";
             var todoItem = new TodoItem(title);
 
             string json = JsonSerializer.Serialize(todoItem);

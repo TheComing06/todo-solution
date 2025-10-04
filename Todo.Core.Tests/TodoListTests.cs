@@ -30,5 +30,14 @@ namespace Todo.Core.Tests
             Assert.Single(found);
             Assert.Equal("Buy milk", found[0].Title);
         }
+
+        [Fact]
+        public void Save_jsonFile()
+        {
+            var list = new TodoList();
+            list.Add("Buy milk");
+            string path = "D:\\Projects\\VS 2022\\TodoSolution";
+            list.Save(path);
+        }
     }
 }
