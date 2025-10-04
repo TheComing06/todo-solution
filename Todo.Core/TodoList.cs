@@ -21,22 +21,42 @@ namespace Todo.Core
 
         public int Count => _items.Count;
 
-        public void Save(string path, string title)
+        public bool Save(string path, string title)
         {
             var todoItem = new TodoItem(title);
-
             string json = JsonSerializer.Serialize(todoItem);
-            File.WriteAllText(path+title+".json", json);
 
-            Console.WriteLine($"File has saved. \n{json}");
+            try
+            {
+                File.WriteAllText(path + title + ".json", json);
+                Console.WriteLine($"File has saved. \n{json}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }           
+
+            return false;
         }
 
-        public void Load(string path)
+        public bool Load(string path)
         {
-            string item = File.ReadAllText(path);
-            string jsonString = JsonSerializer.Deserialize<string>(item);
+            try
+            {
+                string item = File.ReadAllText(path);
+                string jsonString = JsonSerializer.Deserialize<string>(item);
 
-            Console.WriteLine($"File has loaded. \n{jsonString}");
+                Console.WriteLine($"File has loaded. \n{jsonString}");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
         }
     }
 }
