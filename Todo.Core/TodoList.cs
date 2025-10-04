@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Todo.Core
 {
@@ -19,5 +20,14 @@ namespace Todo.Core
             _items.Where(i => i.Title.Contains(substring ?? string.Empty, StringComparison.OrdinalIgnoreCase));
 
         public int Count => _items.Count;
+
+        public void Save(string path)
+        {
+            string title = "Item";
+            var todoItem = new TodoItem(title);
+
+            string json = JsonSerializer.Serialize(todoItem);
+            File.WriteAllText(path+title+".json", json);
+        }
     }
 }
