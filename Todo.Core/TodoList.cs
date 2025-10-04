@@ -21,10 +21,11 @@ namespace Todo.Core
 
         public int Count => _items.Count;
 
-        public bool Save(string path, string title)
+        public bool Save(string path)
         {
-            var todoItem = new TodoItem(title);
-            string json = JsonSerializer.Serialize(todoItem);
+            string title = "Item";
+            TodoItem item = _items.First(i => i.Title == title);
+            string json = JsonSerializer.Serialize(item);
 
             try
             {
@@ -42,10 +43,16 @@ namespace Todo.Core
 
         public bool Load(string path)
         {
+            string title = "Item";
+            path = path + title + ".json";
             try
             {
-                string item = File.ReadAllText(path);
-                string jsonString = JsonSerializer.Deserialize<string>(item);
+                string jsonItem = File.ReadAllText(path);
+                string jsonString = JsonSerializer.Deserialize<string>(jsonItem);
+
+                var item = new TodoItem(jsonItem);
+
+                _items.Add(item);
 
                 Console.WriteLine($"File has loaded. \n{jsonString}");
 

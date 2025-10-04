@@ -36,11 +36,19 @@ namespace Todo.Core.Tests
         {
             var list = new TodoList();
             list.Add("Buy milk");
-            string path = "D:\\Projects\\VS 2022\\TodoSolution";
+            string path = "D:\\Projects\\VS 2022\\TodoSolution\\";
             string title = "Item";
-            list.Save(path, title);
 
-            //Assert
+            Assert.True(list.Save(path));
+        }
+
+        [Fact]
+        public void Load_jsonFile()
+        {
+            string path = "D:\\Projects\\VS 2022\\TodoSolution\\";
+
+            var list = new TodoList();
+            Assert.True(list.Load(path));
         }
     }
 }
