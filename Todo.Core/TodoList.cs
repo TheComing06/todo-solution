@@ -28,6 +28,16 @@ namespace Todo.Core
 
             string json = JsonSerializer.Serialize(todoItem);
             File.WriteAllText(path+title+".json", json);
+
+            Console.WriteLine($"File has saved. \n{json}");
+        }
+
+        public void Load(string path)
+        {
+            string item = File.ReadAllText(path);
+            string jsonString = JsonSerializer.Deserialize<string>(item);
+
+            Console.WriteLine($"File has loaded. \n{jsonString}");
         }
     }
 }
