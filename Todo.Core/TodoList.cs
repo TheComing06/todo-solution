@@ -24,11 +24,12 @@ namespace Todo.Core
         public bool Save(string path)
         {
             string title = "Item";
-            TodoItem item = _items.First(i => i.Title == title);
-            string json = JsonSerializer.Serialize(item);
-
+            
             try
             {
+                TodoItem item = _items[0];
+                string json = JsonSerializer.Serialize(item);
+
                 File.WriteAllText(path + title + ".json", json);
                 Console.WriteLine($"File has saved. \n{json}");
                 return true;
@@ -36,34 +37,45 @@ namespace Todo.Core
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return false;
             }           
-
-            return false;
         }
 
         public bool Load(string path)
         {
             string title = "Item";
-            path = path + title + ".json";
+            string fullPath = path + title + ".json";
+            
             try
             {
-                string jsonItem = File.ReadAllText(path);
-                string jsonString = JsonSerializer.Deserialize<string>(jsonItem);
+                if (!File.Exists(fullPath))
+                {
+                    Console.WriteLine("File not found.");
+                    return false;
+                }
 
-                var item = new TodoItem(jsonItem);
+                string json = File.ReadAllText(fullPath);
+                var items = JsonSerializer.Deserialize<TodoItem>(json);
 
-                _items.Add(item);
+                if (items != null)
+                {
+                    _items.Clear();
+                    _items.Add(items);
 
-                Console.WriteLine($"File has loaded. \n{jsonString}");
-
-                return true;
+                    Console.WriteLine($"File has loaded.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Failed to deserialize item.");
+                    return false;
+                }    
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return false;
             }
-
-            return false;
         }
     }
 }

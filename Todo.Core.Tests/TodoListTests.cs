@@ -37,7 +37,6 @@ namespace Todo.Core.Tests
             var list = new TodoList();
             list.Add("Buy milk");
             string path = "D:\\Projects\\VS 2022\\TodoSolution\\";
-            string title = "Item";
 
             Assert.True(list.Save(path));
         }
@@ -48,7 +47,11 @@ namespace Todo.Core.Tests
             string path = "D:\\Projects\\VS 2022\\TodoSolution\\";
 
             var list = new TodoList();
-            Assert.True(list.Load(path));
+            list.Add("Buy chocolate");
+            list.Save(path);
+
+            var loadedList = new TodoList();
+            Assert.True(loadedList.Load(path));
         }
     }
 }
